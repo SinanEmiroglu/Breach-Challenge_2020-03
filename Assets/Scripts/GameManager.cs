@@ -1,20 +1,27 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
+using System;
 using UnityEngine;
 
 namespace Breach
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
-        private int tick = 0;
-        private float tickLength = 1f;
-        private float lastTick;
+        public static event Action OnSave = delegate { };
+        public static event Action OnLoad = delegate { };
+
+        private int _tick = 0;
+        private float _tickLength = 1f;
+        private float _lastTick;
+
+        public void Save() => OnSave?.Invoke();
+        public void Load() => OnLoad?.Invoke();
 
         private void Update()
         {
-            if (Time.time - lastTick > tickLength)
+            if (Time.time - _lastTick > _tickLength)
             {
-                tick++;
-                lastTick = Time.time;
+                _tick++;
+                _lastTick = Time.time;
             }
         }
 
@@ -22,10 +29,15 @@ namespace Breach
         {
 
             if (GUI.Button(new Rect(10, 10, 150, 50), "Save Level"))
-                print("Save the current level.");
+            {
+                Save();
+
+            }
+            //print("Save the current level.");
 
             if (GUI.Button(new Rect(170, 10, 150, 50), "Load Level"))
-                print("Replaces current level with one loaded from a previous save");
+                Load();
+            //print("Replaces current level with one loaded from a previous save");
 
             if (GUI.Button(new Rect(10, 70, 150, 50), "Save GameState"))
                 print("Save transforms and velocities of all dynamic game object and states");
@@ -33,7 +45,7 @@ namespace Breach
             if (GUI.Button(new Rect(170, 70, 150, 50), "Load GameState"))
                 print("Loads previously saved dynamic game objects, restoring their transforms and velocities");
 
-            GUI.TextField(new Rect(10, 130, 150, 20), "Tick: " + tick.ToString());
+            GUI.TextField(new Rect(10, 130, 150, 20), "Tick: " + _tick.ToString());
 
         }
     }

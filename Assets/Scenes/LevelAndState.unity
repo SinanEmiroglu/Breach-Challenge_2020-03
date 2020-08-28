@@ -809,8 +809,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e1ec57dd6a54c842b4544abe4037efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dudePrefab: {fileID: 5970198286919136051, guid: a7b078f65ee9149478159f097e4122db,
+  dudePrefab: {fileID: 8773756007688770840, guid: a7b078f65ee9149478159f097e4122db,
     type: 3}
+  isSpawning: 0
 --- !u!114 &1196392711
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,24 +3,32 @@ using UnityEngine;
 
 namespace Breach
 {
+    [RequireComponent(typeof(Dude))]
     public class DudeMover : MonoBehaviour
     {
-        private float speed;
-        private Rigidbody rb;
+        private float _speed;
+        private DudeData _data;
+        private Transform _transform;
+        private Rigidbody _rigidBody;
 
-        void Awake()
+        void Start()
         {
-            rb = GetComponent<Rigidbody>();
-            speed = Random.Range(29, 31);
+            _transform = transform;
+            _rigidBody = GetComponent<Rigidbody>();
+            _data = GetComponent<Dude>().DudeData;
+            _speed = _data.MoveSpeed;
         }
 
         void FixedUpdate()
         {
             // move forwards
-            rb.AddForce(transform.forward * speed * Time.deltaTime);
+            _rigidBody.AddForce(_transform.forward * _speed * Time.deltaTime);
+
+            _data.Position = _transform.position;
+            _data.Rotation = _transform.rotation;
 
             // suicide if we're way out of bounds
-            if (transform.position.magnitude > 100f)
+            if (_transform.position.magnitude > 100f)
                 Destroy(gameObject);
         }
     }
