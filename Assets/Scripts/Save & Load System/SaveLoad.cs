@@ -3,55 +3,58 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public sealed class SaveLoad
+namespace Breach
 {
-    static readonly string _savePath = Application.persistentDataPath + "/Saves/";
-
-    public static void Save<T>(T objToSave, string key)
+    public sealed class SaveLoad
     {
-        BinaryFormatter formatter = GetBinaryFormatter();
+        static readonly string _savePath = Application.persistentDataPath + "/Saves/";
 
-        if (!Directory.Exists(_savePath))
-            Directory.CreateDirectory(_savePath);
+        public static void Save<T>(T objToSave, string key)
+        {
+            BinaryFormatter formatter = GetBinaryFormatter();
 
-        string path = $"{_savePath}{key}.txt";
+            if (!Directory.Exists(_savePath))
+                Directory.CreateDirectory(_savePath);
 
-        using (FileStream fileStream = new FileStream(path, FileMode.Create))
-            formatter.Serialize(fileStream, objToSave);
-    }
+            string path = $"{_savePath}{key}.txt";
 
-    public static T Load<T>(string key)
-    {
-        T returnValue = default;
+            using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                formatter.Serialize(fileStream, objToSave);
+        }
 
-        BinaryFormatter formatter = GetBinaryFormatter();
-        string path = $"{_savePath}{key}.txt";
+        public static T Load<T>(string key)
+        {
+            T returnValue = default;
 
-        using (FileStream fileStream = new FileStream(path, FileMode.Open))
-            returnValue = (T)formatter.Deserialize(fileStream);
+            BinaryFormatter formatter = GetBinaryFormatter();
+            string path = $"{_savePath}{key}.txt";
 
-        return returnValue;
-    }
+            using (FileStream fileStream = new FileStream(path, FileMode.Open))
+                returnValue = (T)formatter.Deserialize(fileStream);
 
-    public static bool SaveExists(string key)
-    {
-        string path = $"{_savePath}{key}.txt";
-        return File.Exists(path);
-    }
+            return returnValue;
+        }
 
-    private static BinaryFormatter GetBinaryFormatter()
-    {
-        BinaryFormatter formatter = new BinaryFormatter();
-        SurrogateSelector selector = new SurrogateSelector();
+        public static bool SaveExists(string key)
+        {
+            string path = $"{_savePath}{key}.txt";
+            return File.Exists(path);
+        }
 
-        Vector3SerializationSurrgote vector3Surrgote = new Vector3SerializationSurrgote();
-        QuaternionSerializationSurrogate quaternionSurrogate = new QuaternionSerializationSurrogate();
+        private static BinaryFormatter GetBinaryFormatter()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            SurrogateSelector selector = new SurrogateSelector();
 
-        selector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3Surrgote);
-        selector.AddSurrogate(typeof(Quaternion), new StreamingContext(StreamingContextStates.All), quaternionSurrogate);
+            Vector3SerializationSurrgote vector3Surrgote = new Vector3SerializationSurrgote();
+            QuaternionSerializationSurrogate quaternionSurrogate = new QuaternionSerializationSurrogate();
 
-        formatter.SurrogateSelector = selector;
+            selector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3Surrgote);
+            selector.AddSurrogate(typeof(Quaternion), new StreamingContext(StreamingContextStates.All), quaternionSurrogate);
 
-        return formatter;
+            formatter.SurrogateSelector = selector;
+
+            return formatter;
+        }
     }
 }

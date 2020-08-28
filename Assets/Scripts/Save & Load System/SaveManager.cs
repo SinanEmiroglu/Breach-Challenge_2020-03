@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using System.IO;
 
-public class SaveManager : Singleton<SaveManager>
+namespace Breach
 {
-    public GameObject LoadButtonPrefab;
-
-    public string[] SavedFiles;
-
-    public void GetLoadFiles()
+    public class SaveManager : Singleton<SaveManager>
     {
-        if (!Directory.Exists(Application.persistentDataPath + "/Saves/"))
-            Directory.CreateDirectory(Application.persistentDataPath + "/Saves/");
+        public GameObject LoadButtonPrefab;
 
-        SavedFiles = Directory.GetFiles(Application.persistentDataPath + "/Saves/");
+        public string[] SavedFiles;
+
+        public void GetLoadFiles()
+        {
+            if (!Directory.Exists(Application.persistentDataPath + "/Saves/"))
+                Directory.CreateDirectory(Application.persistentDataPath + "/Saves/");
+
+            SavedFiles = Directory.GetFiles(Application.persistentDataPath + "/Saves/");
+        }
     }
 }

@@ -13,7 +13,6 @@ namespace Breach
 
         private float spawnVolumeSize = 10f;
         private float gridSnap = 0.5f;
-
         private List<DudeData> _allAvailableDudes;
 
         private void OnEnable()
@@ -39,7 +38,6 @@ namespace Breach
             {
                 var spawned = Instantiate(dudePrefab, dude.Position, dude.Rotation);
                 spawned.SetDudeData(dude);
-                Debug.Log("spawned: " + dude.AnImportantStateValue);
             }
         }
 
