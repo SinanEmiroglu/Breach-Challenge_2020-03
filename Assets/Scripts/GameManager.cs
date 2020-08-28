@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
-
 using UnityEngine;
-
 
 namespace Breach
 {
     public class GameManager : MonoBehaviour
     {
-
-
-        private int tick;
+        private int tick = 0;
         private float tickLength = 1f;
         private float lastTick;
+
         private void Update()
         {
             if (Time.time - lastTick > tickLength)
@@ -40,6 +37,4 @@ namespace Breach
 
         }
     }
-
 }
-

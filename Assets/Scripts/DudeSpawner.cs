@@ -1,22 +1,15 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
-// Copyright (c) Breach AS. All rights reserved.
-
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace Breach
 {
     public class DudeSpawner : MonoBehaviour
     {
-
-        [SerializeField]
-        private GameObject dudePrefab;
+        [SerializeField] private GameObject dudePrefab;
 
         private float spawnVolumeSize = 10f;
         private float gridSnap = 0.5f;
-
 
         private void Start()
         {        
@@ -43,9 +36,5 @@ namespace Breach
                 spawnedDudeGO.GetComponent<Dude>().AnImportantStateValue = UnityEngine.Random.Range(1, 10000);
             }
         }
-
-        
     }
-
 }
-
