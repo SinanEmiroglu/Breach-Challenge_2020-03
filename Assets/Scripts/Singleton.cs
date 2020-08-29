@@ -20,7 +20,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
         if (Instance != null && Instance != (T)this)
         {
-            Debug.LogWarningFormat("Trying to create a second instance of {0}", typeof(T));
+            Debug.LogWarningFormat($"Trying to create a second instance of {typeof(T)}");
             Destroy(gameObject);
         }
         else
@@ -32,8 +32,6 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     protected virtual void OnDestroy()
     {
         if (Instance == this)
-        {
             Instance = null;
-        }
     }
 }

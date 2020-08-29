@@ -11,12 +11,6 @@ namespace Breach
         public Vector3 Position;
         public Vector3 Velocity;
         public Quaternion Rotation;
-
-        public DudeData(int anImportantStateValue, Vector3 position, Quaternion rotation)
-        {
-            AnImportantStateValue = anImportantStateValue;
-            Position = position;
-            Rotation = rotation;
-        }
+        public Color Color;
     }
 }

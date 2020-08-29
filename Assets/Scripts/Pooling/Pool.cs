@@ -3,44 +3,44 @@ using UnityEngine;
 
 public class Pool : MonoBehaviour
 {
-    public static Dictionary<PooledMonoBehaviour, Pool> pools = new Dictionary<PooledMonoBehaviour, Pool>();
+    public static Dictionary<PooledMonoBehaviour, Pool> Pools = new Dictionary<PooledMonoBehaviour, Pool>();
 
-    private Queue<PooledMonoBehaviour> objects = new Queue<PooledMonoBehaviour>();
-    private PooledMonoBehaviour prefab;
+    private Queue<PooledMonoBehaviour> _objects = new Queue<PooledMonoBehaviour>();
+    private PooledMonoBehaviour _prefab;
 
     public static Pool GetPool(PooledMonoBehaviour prefab)
     {
         //if that specific prefab included in the dictionary, then just return.
-        if (pools.ContainsKey(prefab))
+        if (Pools.ContainsKey(prefab))
         {
-            return pools[prefab];
+            return Pools[prefab];
         }
         //Otherwise, create a new GameObject and add it to the dictionary
         var poolGameObject = new GameObject("Pool - " + prefab.name);
         var pool = poolGameObject.AddComponent<Pool>();
-        pool.prefab = prefab;
+        pool._prefab = prefab;
 
-        pools.Add(prefab, pool);
+        Pools.Add(prefab, pool);
         return pool;
     }
 
     public T Get<T>() where T : PooledMonoBehaviour
     {
-        if (objects.Count == 0)
+        if (_objects.Count == 0)
         {
             GrowPool();
         }
 
-        var pooledObject = objects.Dequeue();
+        var pooledObject = _objects.Dequeue();
 
         return pooledObject as T;
     }
 
     private void GrowPool()
     {
-        for (int i = 0; i < prefab.InitialPoolSize; i++)
+        for (int i = 0; i < _prefab.InitialPoolSize; i++)
         {
-            var pooledObject = Instantiate(prefab) as PooledMonoBehaviour;
+            var pooledObject = Instantiate(_prefab) as PooledMonoBehaviour;
 
             pooledObject.gameObject.name += " " + i;
 
@@ -54,6 +54,6 @@ public class Pool : MonoBehaviour
     private void AddObjectToAvailableQueue(PooledMonoBehaviour pooledObject)
     {
         pooledObject.transform.SetParent(transform);
-        objects.Enqueue(pooledObject);
+        _objects.Enqueue(pooledObject);
     }
 }

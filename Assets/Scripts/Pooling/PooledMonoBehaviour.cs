@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class PooledMonoBehaviour : MonoBehaviour
 {
-    [SerializeField]
-    private int initialPoolSize = 50;
+    [SerializeField] private int initialPoolSize = 25;
 
-    public event Action<PooledMonoBehaviour> OnReturnToPool;
+    public event Action<PooledMonoBehaviour> OnReturnToPool = delegate { };
 
-    public int InitialPoolSize { get { return initialPoolSize; } }
+    public int InitialPoolSize => initialPoolSize;
 
     public T Get<T>(bool enable = true) where T : PooledMonoBehaviour
     {
@@ -35,10 +34,7 @@ public class PooledMonoBehaviour : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-        if (OnReturnToPool != null)
-        {
-            OnReturnToPool(this);
-        }
+        OnReturnToPool?.Invoke(this);
     }
 
     public void ReturnToPool(float delay = 0)

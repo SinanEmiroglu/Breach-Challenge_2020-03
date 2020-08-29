@@ -25,15 +25,14 @@ namespace Breach
             }
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
 
             if (GUI.Button(new Rect(10, 10, 150, 50), "Save Level"))
             {
                 Save();
-
+                //print("Save the current level.");
             }
-            //print("Save the current level.");
 
             if (GUI.Button(new Rect(170, 10, 150, 50), "Load Level"))
                 Load();

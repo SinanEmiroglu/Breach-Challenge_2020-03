@@ -3,44 +3,35 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField]
-    private int maxHealth = 5;
+    [SerializeField] private int maxHealth = 5;
 
-    private int currentHealth;
+    private int _currentHealth;
 
     public event Action OnTookHit = delegate { };
-
     public event Action OnDie = delegate { };
-
     public event Action<int, int> OnHealthChanged = delegate { };
 
     private void Awake()
     {
-        currentHealth = maxHealth;
+        _currentHealth = maxHealth;
     }
 
     public void TakeHit(int amount)
     {
-        if (currentHealth <= 0)
-        {
+        if (_currentHealth <= 0)
             return;
-        }
 
         ModifyHealth(-amount);
 
-        if (currentHealth > 0)
-        {
-            OnTookHit();
-        }
+        if (_currentHealth > 0)
+            OnTookHit?.Invoke();
         else
-        {
-            OnDie();
-        }
+            OnDie?.Invoke();
     }
 
     private void ModifyHealth(int amount)
     {
-        currentHealth += amount;
-        OnHealthChanged(currentHealth, maxHealth);
+        _currentHealth += amount;
+        OnHealthChanged?.Invoke(_currentHealth, maxHealth);
     }
 }

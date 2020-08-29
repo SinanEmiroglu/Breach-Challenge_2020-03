@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Breach
 {
-    public class Dude : MonoBehaviour
+    public class Dude : Spawnable
     {
-        public DudeData DudeData;
-        public event Action<Dude> OnDestroyed = delegate { };
+        [SerializeField] private MeshRenderer meshRenderer;
 
+        public DudeData DudeData;
         /// <summary>
         /// This is a state that needs to be saved and restored along with the saved game state
         /// </summary>
@@ -19,13 +18,23 @@ namespace Breach
         public void SetDudeData(DudeData data)
         {
             DudeData = data;
-            DudeData.MoveSpeed = Random.Range(29, 31);
-            _anImportantStateValue = data.AnImportantStateValue;
+            meshRenderer.material.color= DudeData.Color;
+            _anImportantStateValue = DudeData.AnImportantStateValue;
         }
 
-        private void OnDestroy()
+        private void OnEnable()
         {
-            OnDestroyed?.Invoke(this);
+            DudeData.AnImportantStateValue = Random.Range(1, 10000);
+            DudeData.MoveSpeed = Random.Range(1, 4);
+            DudeData.Color = GetRandomColorValue();
+
+            meshRenderer.material.color = DudeData.Color;
+            _anImportantStateValue = DudeData.AnImportantStateValue;
+        }
+
+        private Color GetRandomColorValue()
+        {
+            return new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
         }
     }
 }
