@@ -8,8 +8,9 @@ OcclusionCullingSettings:
     smallestOccluder: 5
     smallestHole: 0.25
     backfaceThreshold: 100
-  m_SceneGUID: 00000000000000000000000000000000
-  m_OcclusionCullingData: {fileID: 0}
+  m_SceneGUID: 9fc0d4010bbf28b4594072e72b8655ab
+  m_OcclusionCullingData: {fileID: 36300000, guid: aa78eee8ac8c06b47b0f773adfd7f5fa,
+    type: 2}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
@@ -301,6 +302,40 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 119292088}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &427527534
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2494398488644731227, guid: c33248a6da960c74d9a8088941a5644b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2494398488644731227, guid: c33248a6da960c74d9a8088941a5644b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2494398488644731227, guid: c33248a6da960c74d9a8088941a5644b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2494398488644731227, guid: c33248a6da960c74d9a8088941a5644b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2494398488644731228, guid: c33248a6da960c74d9a8088941a5644b,
+        type: 3}
+      propertyPath: m_Name
+      value: Map_v1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c33248a6da960c74d9a8088941a5644b, type: 3}
 --- !u!4 &501250239 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6085686129446969757, guid: 646caf18d2e50bb4b94cf8d498224804,
@@ -757,7 +792,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1128075444
 Transform:
   m_ObjectHideFlags: 0
