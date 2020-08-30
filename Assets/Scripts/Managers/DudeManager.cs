@@ -25,10 +25,10 @@ namespace Breach
 
         private void LoadHandler()
         {
-            if (!SaveLoad.SaveExists(nameof(SAVE_FILE_KEY)))
+            if (!SaveLoad.SaveExists(SAVE_FILE_KEY))
                 return;
 
-            _allAvailableDudesData = SaveLoad.Load<List<DudeData>>(nameof(SAVE_FILE_KEY));
+            _allAvailableDudesData = SaveLoad.Load<List<DudeData>>(SAVE_FILE_KEY);
 
             foreach (var data in _allAvailableDudesData)
             {
@@ -39,7 +39,7 @@ namespace Breach
 
         private void SaveHandler()
         {
-            SaveLoad.Save(_allAvailableDudesData, nameof(SAVE_FILE_KEY));
+            SaveLoad.Save(_allAvailableDudesData, SAVE_FILE_KEY);
         }
 
         private void OnDisable()

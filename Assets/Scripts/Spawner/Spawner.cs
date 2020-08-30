@@ -20,7 +20,10 @@ namespace Breach
         private void OnEnable()
         {
             _spawnTimer = _respawnRate - initialSpawnDelay;
+        }
 
+        private void Start()
+        {
             if (LevelManager.TryGetInstance(out LevelManager manager))
                 _totalNumberToSpawn = manager.CurrentLevel.DudeNumberToSpawn;
         }

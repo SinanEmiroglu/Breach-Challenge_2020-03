@@ -5,7 +5,7 @@ using UnityEngine.AI;
 namespace Breach
 {
     [RequireComponent(typeof(Dude))]
-    public class DudeMovement : MonoBehaviour
+    public class DudeMover : MonoBehaviour
     {
         private const float _rotationSpeed = 3f;
 
@@ -22,7 +22,7 @@ namespace Breach
             _transform = transform;
             _data = GetComponent<Dude>().DudeData;
             _speed = _data.MoveSpeed;
-            playerTransform = FindObjectOfType<PlayerMovement>().transform;
+            playerTransform = FindObjectOfType<PlayerMovementController>().transform;
             path = new NavMeshPath();
         }
 

@@ -2,7 +2,9 @@
 
 namespace Breach
 {
-    public class PlayerMovement : MonoBehaviour
+
+
+    public class PlayerMovementController : MonoBehaviour
     {
         const float GRAVITY = 9.81f;
 
@@ -16,6 +18,11 @@ namespace Breach
         private float _horizontalMouseAxis;
         private Transform _transform;
         private CharacterController _characterController;
+
+        public void Jump()
+        {
+            _directionY = jumpForce;
+        }
 
         private void Awake()
         {
@@ -37,13 +44,12 @@ namespace Breach
             _directionY -= GRAVITY * Time.deltaTime;
             direction.y = _directionY;
 
-            _transform.Rotate(_transform.up * _horizontalMouseAxis * _rotationSpeed);
-            _characterController.Move(_transform.TransformDirection(direction) * Time.deltaTime * moveSpeed);
-        }
+            if (Input.GetMouseButton(1))
+            {
+                _transform.Rotate(_transform.up * _horizontalMouseAxis * _rotationSpeed);
+            }
 
-        public void Jump()
-        {
-            _directionY = jumpForce;
+            _characterController.Move(_transform.TransformDirection(direction) * Time.deltaTime * moveSpeed);
         }
     }
 }

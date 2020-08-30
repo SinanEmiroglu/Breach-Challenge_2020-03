@@ -8,19 +8,25 @@ namespace Breach
         [SerializeField] private int maxHealth = 5;
 
         private int _currentHealth;
-
         public event Action OnTookHit = delegate { };
         public event Action OnDie = delegate { };
         public event Action<int, int> OnHealthChanged = delegate { };
+
+        public void SetCurrentHealth(int value)
+        {
+            _currentHealth = value;
+        }
 
         private void Awake()
         {
             _currentHealth = maxHealth;
         }
-        private void OnEnable()
+
+        private void Start()
         {
             OnHealthChanged?.Invoke(_currentHealth, maxHealth);
         }
+
         public void TakeHit(int amount)
         {
             if (_currentHealth <= 0)

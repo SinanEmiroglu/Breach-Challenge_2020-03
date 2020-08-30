@@ -1,6 +1,4 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
-using System;
-using System.CodeDom;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,10 +6,10 @@ namespace Breach
 {
     public class Dude : Spawnable
     {
-        [SerializeField] int damage = 1;
+        [SerializeField] private int damage = 1;
         [SerializeField] private MeshRenderer meshRenderer;
 
-        public DudeData DudeData;
+        [HideInInspector] public DudeData DudeData;
         /// <summary>
         /// This is a state that needs to be saved and restored along with the saved game state
         /// </summary>
@@ -27,12 +25,12 @@ namespace Breach
 
         private void OnCollisionEnter(Collision collision)
         {
-            var player = collision.collider.GetComponent<PlayerMovement>();
+            Player player = collision.collider.GetComponent<Player>();
 
             if (player == null)
                 return;
 
-            var playerHealth = player.GetComponent<Health>();
+            var playerHealth = player.gameObject.GetComponent<Health>();
 
             if (collision.WasSide())
             {
