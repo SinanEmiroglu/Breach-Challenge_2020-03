@@ -2,42 +2,40 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 3f;
+    const float GRAVITY = 9.81f;
 
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float jumpForce = 4f;
+    [SerializeField] private float _rotationSpeed = 5f;
+
+    private float _directionY;
+    private float _verticalAxis;
+    private float _horizontalAxis;
+    private float _horizontalMouseAxis;
     private Transform _transform;
-    //private Rigidbody _rigidbody;
     private CharacterController _characterController;
-    private float _rotationSpeed = 4f;
 
     private void Awake()
     {
         _transform = transform;
-        // _rigidbody = GetComponent<Rigidbody>();
         _characterController = GetComponent<CharacterController>();
     }
 
     private void FixedUpdate()
     {
-        var vertical = Input.GetAxis("Vertical");
-        var horizontal = Input.GetAxis("Horizontal");
-        //var mouseHorizontal = Input.GetAxis("Mouse X");
+        _verticalAxis = Input.GetAxis("Vertical");
+        _horizontalAxis = Input.GetAxis("Horizontal");
+        _horizontalMouseAxis = Input.GetAxis("Mouse X");
 
-        _characterController.SimpleMove(_transform.forward * vertical * moveSpeed);
+        var direction = new Vector3(_horizontalAxis, 0, _verticalAxis);
 
-        //if (Input.GetButtonDown("Jump") && _characterController.isGrounded)
-        //    Jump();
-        //else
-        //    _rigidbody.useGravity = false;
+        if (_characterController.isGrounded && Input.GetButtonDown("Jump"))
+            _directionY = jumpForce;
 
-        //if (Input.GetMouseButton(1) == false)
-        _transform.Rotate(Vector3.up * horizontal * _rotationSpeed);
-    }
+        _directionY -= GRAVITY * Time.deltaTime;
+        direction.y = _directionY;
 
-    private void Jump()
-    {
-        //_rigidbody.useGravity = true;
-        //_rigidbody.velocity = new Vector3(0, jumpForce, 0);
-        //_rigidbody.AddForce(Vector2.up * jumpForce);
+        _transform.Rotate(_transform.up * _horizontalMouseAxis * _rotationSpeed);
+        _characterController.Move(_transform.TransformDirection(direction) * Time.deltaTime * moveSpeed);
     }
 }
