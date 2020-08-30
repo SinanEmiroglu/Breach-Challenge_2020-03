@@ -3,99 +3,105 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Spawner : MonoBehaviour
+namespace Breach
 {
-    [SerializeField] private Spawnable[] prefabs;
-    [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private float respawnRate = 10;
-    [SerializeField] private float initialSpawnDelay;
-    [SerializeField] private int totalNumberToSpawn;
-    [SerializeField] private int numberToSpawnEachTime = 1;
-
-    private float _spawnTimer;
-    private int _totalNumberSpawned = 0;
-
-    private void OnEnable()
+    public class Spawner : MonoBehaviour
     {
-        _spawnTimer = respawnRate - initialSpawnDelay;
-    }
+        [SerializeField] private Spawnable[] prefabs;
+        [SerializeField] private Transform[] spawnPoints;
 
-    private void Update()
-    {
-        _spawnTimer += Time.deltaTime;
+        private float _spawnTimer;
+        private int _totalNumberToSpawn;
+        private int _totalNumberSpawned = 0;
+        private readonly float initialSpawnDelay = 1;
+        private readonly float _respawnRate = 10;
+        private readonly int _numberToSpawnEachTime = 1;
 
-        if (ShouldSpawn())
-            Spawn();
-    }
-
-    private void Spawn()
-    {
-        _spawnTimer = 0;
-
-        var availableSpawnPoints = spawnPoints.ToList();
-        for (int i = 0; i < numberToSpawnEachTime; i++)
+        private void OnEnable()
         {
-            if (_totalNumberSpawned >= totalNumberToSpawn && totalNumberToSpawn > 0)
-                break;
+            _spawnTimer = _respawnRate - initialSpawnDelay;
 
-            Spawnable prefab = ChooseRandomPrefab();
-            if (prefab != null)
+            if (LevelManager.TryGetInstance(out LevelManager manager))
+                _totalNumberToSpawn = manager.CurrentLevel.DudeNumberToSpawn;
+        }
+
+        private void Update()
+        {
+            _spawnTimer += Time.deltaTime;
+
+            if (ShouldSpawn())
+                Spawn();
+        }
+
+        private void Spawn()
+        {
+            _spawnTimer = 0;
+
+            var availableSpawnPoints = spawnPoints.ToList();
+            for (int i = 0; i < _numberToSpawnEachTime; i++)
             {
-                Transform spawnPoint = ChooseRandomSpawnPoint(availableSpawnPoints);
+                if (_totalNumberSpawned >= _totalNumberToSpawn && _totalNumberToSpawn > 0)
+                    break;
 
-                if (availableSpawnPoints.Contains(spawnPoint))
-                    availableSpawnPoints.Remove(spawnPoint);
+                Spawnable prefab = ChooseRandomPrefab();
+                if (prefab != null)
+                {
+                    Transform spawnPoint = ChooseRandomSpawnPoint(availableSpawnPoints);
 
-                var spawned = prefab.Get<Spawnable>(spawnPoint.position, spawnPoint.rotation);
+                    if (availableSpawnPoints.Contains(spawnPoint))
+                        availableSpawnPoints.Remove(spawnPoint);
 
-                _totalNumberSpawned++;
+                    var spawned = prefab.Get<Spawnable>(spawnPoint.position, spawnPoint.rotation);
+
+                    _totalNumberSpawned++;
+                }
             }
         }
-    }
 
-    private Transform ChooseRandomSpawnPoint(List<Transform> availableSpawnPoints)
-    {
-        if (availableSpawnPoints.Count == 0)
-            return transform;
+        private Transform ChooseRandomSpawnPoint(List<Transform> availableSpawnPoints)
+        {
+            if (availableSpawnPoints.Count == 0)
+                return transform;
 
-        if (availableSpawnPoints.Count == 1)
-            return availableSpawnPoints[0];
+            if (availableSpawnPoints.Count == 1)
+                return availableSpawnPoints[0];
 
-        int index = Random.Range(0, availableSpawnPoints.Count);
-        return availableSpawnPoints[index];
-    }
+            int index = Random.Range(0, availableSpawnPoints.Count);
+            return availableSpawnPoints[index];
+        }
 
-    private Spawnable ChooseRandomPrefab()
-    {
-        if (prefabs.Length == 0)
-            return null;
+        private Spawnable ChooseRandomPrefab()
+        {
+            if (prefabs.Length == 0)
+                return null;
 
-        if (prefabs.Length == 1)
-            return prefabs[0];
+            if (prefabs.Length == 1)
+                return prefabs[0];
 
-        int index = Random.Range(0, prefabs.Length);
-        return prefabs[index];
-    }
+            int index = Random.Range(0, prefabs.Length);
+            return prefabs[index];
+        }
 
-    private bool ShouldSpawn()
-    {
-        if (_totalNumberSpawned >= totalNumberToSpawn && totalNumberToSpawn > 0)
-            return false;
+        private bool ShouldSpawn()
+        {
+            if (_totalNumberSpawned >= _totalNumberToSpawn && _totalNumberToSpawn > 0)
+                return false;
 
-        return _spawnTimer >= respawnRate;
-    }
+            return _spawnTimer >= _respawnRate;
+        }
 
 #if UNITY_EDITOR
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawCube(transform.position, Vector3.one);
-        foreach (var spawnPoint in spawnPoints)
+        private void OnDrawGizmos()
         {
-            Gizmos.DrawSphere(spawnPoint.position, 0.5f);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawCube(transform.position, Vector3.one);
+            foreach (var spawnPoint in spawnPoints)
+            {
+                Gizmos.DrawSphere(spawnPoint.position, 0.5f);
+            }
         }
-    }
 
 #endif
+    }
 }

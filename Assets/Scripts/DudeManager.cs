@@ -12,10 +12,6 @@ namespace Breach
 
         private List<DudeData> _allAvailableDudesData;
 
-        //[SerializeField] private bool isSpawning;
-        //private float spawnVolumeSize = 10f;
-        //private float gridSnap = 0.5f;
-
         private void OnEnable()
         {
             GameManager.OnSave += SaveHandler;
@@ -25,7 +21,6 @@ namespace Breach
         private void Start()
         {
             _allAvailableDudesData = new List<DudeData>();
-            //StartCoroutine(SpawnDudes());
         }
 
         private void LoadHandler()
@@ -52,35 +47,5 @@ namespace Breach
             GameManager.OnSave -= SaveHandler;
             GameManager.OnLoad -= LoadHandler;
         }
-
-        //private IEnumerator SpawnDudes()
-        //{
-        //    while (isSpawning)
-        //    {
-        //        yield return new WaitForSeconds(0.25f);
-
-        //        Vector3 randomSpawnSpot = GetRandomSpawnSpot();
-        //        Quaternion randomRotation = GetRandomRotation();
-
-        //        Dude spawnedDudeGO = Instantiate(dudePrefab, randomSpawnSpot, randomRotation);
-        //        var dudeData = new DudeData(Random.Range(1, 10000), GetRandomSpawnSpot(), randomRotation);
-        //        Set an important state on the dude(which needs to be saved / loaded as well)
-        //        spawnedDudeGO.SetDudeData(dudeData);
-
-        //        _allAvailableDudes.Add(dudeData);
-        //        spawnedDudeGO.OnReturnToPool += (dude) => _allAvailableDudes.Remove(dude.GetComponent<Dude>().DudeData);
-        //    }
-        //}
-
-        //private Quaternion GetRandomRotation() => Quaternion.Euler(0, Random.Range(0, 3) * 90f, 0);
-
-        //private Vector3 GetRandomSpawnSpot()
-        //{
-        //    return new Vector3(
-        //                        Mathf.Round(Random.Range(-spawnVolumeSize * 0.5f, spawnVolumeSize * 0.5f) / gridSnap) * gridSnap,
-        //                        Mathf.Round(Random.Range(0, spawnVolumeSize) / gridSnap) * gridSnap,
-        //                        Mathf.Round(Random.Range(-spawnVolumeSize * 0.5f, spawnVolumeSize * 0.5f) / gridSnap) * gridSnap
-        //                    );
-        //}
     }
 }

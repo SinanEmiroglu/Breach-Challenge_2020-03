@@ -15,8 +15,6 @@ namespace Breach
         private Transform playerTransform;
         private NavMeshPath path;
 
-        //private Rigidbody _rigidBody;
-
         private void OnEnable() => GetComponent<Health>().OnDie += () => enabled = false;
 
         private void Start()
@@ -26,9 +24,6 @@ namespace Breach
             _speed = _data.MoveSpeed;
             playerTransform = FindObjectOfType<PlayerMovement>().transform;
             path = new NavMeshPath();
-
-            //_rigidBody = GetComponent<Rigidbody>();
-            //_rigidBody.velocity = _data.Velocity;
         }
 
         private void FixedUpdate()
@@ -54,17 +49,10 @@ namespace Breach
             }
 
             UpdateDudeData();
-
-            // move forwards
-            //_rigidBody.AddForce(_transform.forward * _speed * Time.deltaTime);
-            // suicide if we're way out of bounds
-            //if (_transform.position.magnitude > 100f)
-            //    Destroy(gameObject);
         }
 
         private void UpdateDudeData()
         {
-            //_data.Velocity = _rigidBody.GetPointVelocity(_transform.position);
             _data.Position = _transform.position;
             _data.Rotation = _transform.rotation;
         }

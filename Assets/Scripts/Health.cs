@@ -1,37 +1,43 @@
 ﻿using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+namespace Breach
 {
-    [SerializeField] private int maxHealth = 5;
-
-    private int _currentHealth;
-
-    public event Action OnTookHit = delegate { };
-    public event Action OnDie = delegate { };
-    public event Action<int, int> OnHealthChanged = delegate { };
-
-    private void Awake()
+    public class Health : MonoBehaviour
     {
-        _currentHealth = maxHealth;
-    }
+        [SerializeField] private int maxHealth = 5;
 
-    public void TakeHit(int amount)
-    {
-        if (_currentHealth <= 0)
-            return;
+        private int _currentHealth;
 
-        ModifyHealth(-amount);
+        public event Action OnTookHit = delegate { };
+        public event Action OnDie = delegate { };
+        public event Action<int, int> OnHealthChanged = delegate { };
 
-        if (_currentHealth > 0)
-            OnTookHit?.Invoke();
-        else
-            OnDie?.Invoke();
-    }
+        private void Awake()
+        {
+            _currentHealth = maxHealth;
+        }
+        private void OnEnable()
+        {
+            OnHealthChanged?.Invoke(_currentHealth, maxHealth);
+        }
+        public void TakeHit(int amount)
+        {
+            if (_currentHealth <= 0)
+                return;
 
-    private void ModifyHealth(int amount)
-    {
-        _currentHealth += amount;
-        OnHealthChanged?.Invoke(_currentHealth, maxHealth);
+            ModifyHealth(-amount);
+
+            if (_currentHealth > 0)
+                OnTookHit?.Invoke();
+            else
+                OnDie?.Invoke();
+        }
+
+        private void ModifyHealth(int amount)
+        {
+            _currentHealth += amount;
+            OnHealthChanged?.Invoke(_currentHealth, maxHealth);
+        }
     }
 }
