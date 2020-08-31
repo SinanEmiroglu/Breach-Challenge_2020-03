@@ -2,13 +2,11 @@
 
 namespace Breach
 {
-
-
     public class PlayerMovementController : MonoBehaviour
     {
         const float GRAVITY = 9.81f;
 
-        [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private float moveSpeed = 6f;
         [SerializeField] private float jumpForce = 4f;
         [SerializeField] private float _rotationSpeed = 5f;
 

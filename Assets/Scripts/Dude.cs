@@ -10,6 +10,7 @@ namespace Breach
         [SerializeField] private MeshRenderer meshRenderer;
 
         [HideInInspector] public DudeData DudeData;
+
         /// <summary>
         /// This is a state that needs to be saved and restored along with the saved game state
         /// </summary>

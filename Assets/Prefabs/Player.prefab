@@ -89,6 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1136349761533590456}
   - component: {fileID: 1136349761533590463}
+  - component: {fileID: 7061475750276932816}
   - component: {fileID: 4906091930629773842}
   - component: {fileID: 1370741713805583386}
   - component: {fileID: 1136349761533590462}
@@ -133,6 +134,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &7061475750276932816
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136349761533590453}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.2, z: 0.1}
+  m_Center: {x: 0, y: -1.05, z: 0}
 --- !u!114 &4906091930629773842
 MonoBehaviour:
   m_ObjectHideFlags: 0

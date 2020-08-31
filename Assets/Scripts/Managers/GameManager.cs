@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,7 +17,7 @@ namespace Breach
         private float _tickLength = 1f;
         private float _lastTick;
         private bool _isGamePaused = false;
-        private PlayerMovementController _player;
+        private PlayerMovementController _playerController;
         private LevelData _currentLevelData;
 
         public void Save() => OnSave?.Invoke();
@@ -24,9 +25,9 @@ namespace Breach
 
         internal void BouncePlayer()
         {
-            OnScoreUpdated?.Invoke(_currentLevelData.CurrentScore++);
-            _player.Jump();
-            Debug.Log("Score: " + _currentLevelData.CurrentScore);
+            OnScoreUpdated?.Invoke(++_currentLevelData.CurrentScore);
+            _playerController.Jump();
+
             if (_currentLevelData.CurrentScore >= _currentLevelData.ScoreToWin)
             {
                 HandleGameWon();
@@ -46,15 +47,9 @@ namespace Breach
             _isGamePaused = !_isGamePaused;
         }
 
-        public void QuitGame()
-        {
-            Save();
-            Application.Quit();
-        }
-
         private void Start()
         {
-            _player = FindObjectOfType<PlayerMovementController>();
+            _playerController = FindObjectOfType<PlayerMovementController>();
 
             if (LevelManager.TryGetInstance(out LevelManager manager))
             {
@@ -62,6 +57,7 @@ namespace Breach
                 OnScoreUpdated?.Invoke(_currentLevelData.CurrentScore);
             }
         }
+
         private void Update()
         {
             if (Time.time - _lastTick > _tickLength)
@@ -85,13 +81,14 @@ namespace Breach
         {
             OnRemainingTimeUpdated?.Invoke(0);
             OnWin?.Invoke();
+            SceneManager.UnloadSceneAsync(0);
             SceneManager.LoadScene("menu");
         }
 
         private void HandleGameLost()
         {
             OnLose?.Invoke();
-            SceneManager.UnloadSceneAsync("Level");
+            SceneManager.UnloadSceneAsync(0);
         }
 
         //private void OnGUI()

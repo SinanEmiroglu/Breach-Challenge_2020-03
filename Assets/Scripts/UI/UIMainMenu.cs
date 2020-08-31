@@ -24,9 +24,12 @@ namespace Breach
                 newGameButton.interactable = false;
                 SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive).completed += (opr) =>
                 {
-                    newGameButton.interactable = true;
-                    GameManager.Instance.Load();
-                    menuPanel.SetActive(false);
+                    if (opr.isDone)
+                    {
+                        newGameButton.interactable = true;
+                        GameManager.Instance.Load();
+                        menuPanel.SetActive(false);
+                    }
                 };
             });
 
@@ -39,9 +42,7 @@ namespace Breach
                     if (opr.isDone)
                     {
                         newGameButton.interactable = true;
-                        //GameManager.Instance.Load();
                         menuPanel.SetActive(false);
-
                     }
                 };
             });
