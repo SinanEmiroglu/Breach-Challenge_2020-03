@@ -28,6 +28,9 @@ namespace Breach
 
         private void FixedUpdate()
         {
+            if (playerTransform == null)
+                return;
+
             var targetPosition = playerTransform.position;
 
             bool foundPath = NavMesh.CalculatePath(_transform.position, targetPosition, NavMesh.AllAreas, path);

@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
+
 using UnityEngine;
 
 namespace Breach

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
+
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Breach
 {
@@ -16,6 +18,21 @@ namespace Breach
         {
             GameManager.OnSave += SaveHandler;
             GameManager.OnLoad += LoadHandler;
+
+            SceneManager.sceneUnloaded += SceneUnloadedHandler;
+        }
+
+        /// <summary>
+        /// When Level scene was unloaded, return all dudes to the pool.
+        /// </summary>
+        private void SceneUnloadedHandler(Scene scene)
+        {
+            if (scene.buildIndex == 1)
+            {
+                var dudePool = Pool.GetPool(dudePrefab);
+                foreach (var dude in dudePool.GetComponentsInChildren<Dude>())
+                    dude.ReturnToPool();
+            }
         }
 
         private void Start()
@@ -23,6 +40,9 @@ namespace Breach
             _allAvailableDudesData = new List<DudeData>();
         }
 
+        /// <summary>
+        /// When Level is loaded, instantiate all dudes and set their saved values.
+        /// </summary>
         private void LoadHandler()
         {
             if (!SaveLoad.SaveExists(SAVE_FILE_KEY))
@@ -37,6 +57,9 @@ namespace Breach
             }
         }
 
+        /// <summary>
+        /// Save all active dudes in the scene. {Positions, Rotations, Colors, Speeds, AnImportantStateValues}
+        /// </summary>
         private void SaveHandler()
         {
             SaveLoad.Save(_allAvailableDudesData, SAVE_FILE_KEY);

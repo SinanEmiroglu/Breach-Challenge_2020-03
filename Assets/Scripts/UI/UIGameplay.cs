@@ -6,8 +6,8 @@ namespace Breach
 {
     public class UIGameplay : MonoBehaviour
     {
-        [Header("Score")]
         [SerializeField] private TextMeshProUGUI scoreText;
+        [SerializeField] private TextMeshProUGUI levelNameText;
 
         [Space, Header("Health Bar")]
         [SerializeField] private Image healthImage;
@@ -35,7 +35,8 @@ namespace Breach
         {
             _playerHealth.OnHealthChanged += HealthChangedHandler;
             GameManager.OnRemainingTimeUpdated += (time) => remainingTimeText.text = time.ToString();
-            GameManager.OnScoreUpdated += (score) => scoreText.text = score.ToString();
+            GameManager.OnScoreUpdated += (actual, expected) => scoreText.text = $"{actual}/{expected}";
+            GameManager.OnLevelLoaded += (data) => levelNameText.text = data.LevelName;
         }
 
         private void Start()

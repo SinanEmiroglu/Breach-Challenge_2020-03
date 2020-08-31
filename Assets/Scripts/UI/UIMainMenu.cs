@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Breach
@@ -11,40 +10,26 @@ namespace Breach
         [SerializeField] private Button newGameButton;
         [SerializeField] private Button quitButton;
 
+        public void SetActiveMainMenu(bool value)
+        {
+            menuPanel.SetActive(value);
+        }
+
         private void Start()
         {
             continueButton.interactable = false;
 
-            if (SaveLoad.SaveExists("Level"))
+            if (SaveLoad.SaveExists(GameManager.SAVE_FILE_KEY))
                 continueButton.interactable = true;
 
             continueButton.onClick.AddListener(() =>
             {
-                continueButton.interactable = false;
-                newGameButton.interactable = false;
-                SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive).completed += (opr) =>
-                {
-                    if (opr.isDone)
-                    {
-                        newGameButton.interactable = true;
-                        GameManager.Instance.Load();
-                        menuPanel.SetActive(false);
-                    }
-                };
+                GameManager.Instance.BeginLevel(GameState.Saved);
             });
 
             newGameButton.onClick.AddListener(() =>
             {
-                newGameButton.interactable = false;
-
-                SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive).completed += (opr) =>
-                {
-                    if (opr.isDone)
-                    {
-                        newGameButton.interactable = true;
-                        menuPanel.SetActive(false);
-                    }
-                };
+                GameManager.Instance.BeginLevel(GameState.Fresh);
             });
 
             quitButton.onClick.AddListener(() => Application.Quit());

@@ -13,19 +13,15 @@ namespace Breach
         private float _spawnTimer;
         private int _totalNumberToSpawn;
         private int _totalNumberSpawned = 0;
+
+        private readonly float _respawnRate = 3;
         private readonly float initialSpawnDelay = 1;
-        private readonly float _respawnRate = 10;
         private readonly int _numberToSpawnEachTime = 1;
 
         private void OnEnable()
         {
             _spawnTimer = _respawnRate - initialSpawnDelay;
-        }
-
-        private void Start()
-        {
-            if (LevelManager.TryGetInstance(out LevelManager manager))
-                _totalNumberToSpawn = manager.CurrentLevel.DudeNumberToSpawn;
+            GameManager.OnLevelLoaded += (data) => _totalNumberToSpawn = data.DudeNumberToSpawn;
         }
 
         private void Update()
