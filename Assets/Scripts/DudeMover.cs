@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
+
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +8,7 @@ namespace Breach
     [RequireComponent(typeof(Dude))]
     public class DudeMover : MonoBehaviour
     {
-        private const float _rotationSpeed = 3f;
+        private const float _rotationSpeed = 10f;
 
         private float _speed;
         private DudeData _data;

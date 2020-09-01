@@ -127,7 +127,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3263401491979336876}
   m_Enabled: 1
-  m_CastShadows: 0
+  m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -167,7 +167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5914002538779104178}
-  - component: {fileID: 8031805612965290226}
+  - component: {fileID: -9062863790969227731}
   - component: {fileID: 2348069367054916585}
   - component: {fileID: 8773756007688770840}
   - component: {fileID: 9008991025151429679}
@@ -195,7 +195,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &8031805612965290226
+--- !u!54 &-9062863790969227731
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
