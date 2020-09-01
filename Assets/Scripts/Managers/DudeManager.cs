@@ -12,7 +12,7 @@ namespace Breach
 
         [SerializeField] private Dude dudePrefab;
 
-        private List<DudeData> _allAvailableDudesData;
+        private List<DudeData> _allAvailableDudesData = new List<DudeData>();
 
         private void OnEnable()
         {
@@ -35,11 +35,6 @@ namespace Breach
             }
         }
 
-        private void Start()
-        {
-            _allAvailableDudesData = new List<DudeData>();
-        }
-
         /// <summary>
         /// When Level is loaded, instantiate all dudes and set their saved values.
         /// </summary>
@@ -48,6 +43,7 @@ namespace Breach
             if (!SaveLoad.SaveExists(SAVE_FILE_KEY))
                 return;
 
+            _allAvailableDudesData = new List<DudeData>();
             _allAvailableDudesData = SaveLoad.Load<List<DudeData>>(SAVE_FILE_KEY);
 
             foreach (var data in _allAvailableDudesData)

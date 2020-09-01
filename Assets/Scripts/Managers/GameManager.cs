@@ -26,17 +26,18 @@ namespace Breach
         private bool _isTimeOver = false;
         private bool _isGamePaused = false;
         private bool _isGameStarted = false;
-        private PlayerMovementController _playerController;
+        private LevelData _currentLevelData;
         private UIMainMenu _mainMenu;
+        private PlayerMovementController _playerController;
         private LevelData[] _levels;
 
-        public LevelData CurrentLevelData { get; private set; }
         public void BeginLevel(GameState state) => StartCoroutine(BeginGame(state));
         public void BeginNextLevel() => StartCoroutine(BeginNextGame());
 
         public void Save()
         {
-            CurrentLevelData.RemainingTimeOfLevel = _remainingTime;
+            _currentLevelData.RemainingTimeOfLevel = _remainingTime;
+            SaveLoad.Save(_currentLevelData, SAVE_FILE_KEY);
             OnSave?.Invoke();
         }
 
@@ -44,10 +45,10 @@ namespace Breach
 
         internal void BouncePlayer()
         {
-            OnScoreUpdated?.Invoke(++CurrentLevelData.CurrentScore, CurrentLevelData.ScoreToWin);
+            OnScoreUpdated?.Invoke(++_currentLevelData.CurrentScore, _currentLevelData.ScoreToWin);
             _playerController.Jump();
 
-            if (CurrentLevelData.CurrentScore >= CurrentLevelData.ScoreToWin)
+            if (_currentLevelData.CurrentScore >= _currentLevelData.ScoreToWin)
             {
                 GameOver(true);
             }
@@ -151,17 +152,18 @@ namespace Breach
             if (state == GameState.Fresh)
             {
                 InitializeLevelData();
-                CurrentLevelData = GetLevelDataByIndex(_levelIndex);
+                _currentLevelData = GetLevelDataByIndex(_levelIndex);
             }
             else if (state == GameState.Saved)
             {
-                CurrentLevelData = GetSavedLevelData();
+                Load();
+                _currentLevelData = GetSavedLevelData();
             }
 
-            _remainingTime = CurrentLevelData.RemainingTimeOfLevel;
+            _remainingTime = _currentLevelData.RemainingTimeOfLevel;
 
-            OnLevelLoaded?.Invoke(CurrentLevelData);
-            OnScoreUpdated?.Invoke(CurrentLevelData.CurrentScore, CurrentLevelData.ScoreToWin);
+            OnLevelLoaded?.Invoke(_currentLevelData);
+            OnScoreUpdated?.Invoke(_currentLevelData.CurrentScore, _currentLevelData.ScoreToWin);
         }
 
         private IEnumerator BeginNextGame()
@@ -170,9 +172,9 @@ namespace Breach
 
             yield return new WaitUntil(() => operation.isDone);
 
-            CurrentLevelData = GetLevelDataByIndex(++_levelIndex);
+            _currentLevelData = GetLevelDataByIndex(++_levelIndex);
 
-            if (CurrentLevelData != null)
+            if (_currentLevelData != null)
             {
                 _isGameStarted = true;
                 SceneManager.UnloadSceneAsync(2);

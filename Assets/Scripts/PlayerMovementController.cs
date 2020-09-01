@@ -7,9 +7,9 @@ namespace Breach
         [SerializeField] private float moveSpeed = 6f;
         [SerializeField] private float jumpForce = 4f;
         [SerializeField] private float _rotationSpeed = 5f;
-        [SerializeField] Transform foot;
 
         [Header("Foot Sphere Cast Fields")]
+        [SerializeField] Transform foot;
         [SerializeField] private float radius;
         [SerializeField] private LayerMask layerMask;
 

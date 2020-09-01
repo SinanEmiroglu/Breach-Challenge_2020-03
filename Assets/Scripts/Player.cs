@@ -4,6 +4,8 @@ namespace Breach
 {
     public class Player : MonoBehaviour
     {
+        const string SAVE_FILE_KEY = "Player";
+
         [HideInInspector] public PlayerData PlayerData;
 
         private Health _health;
@@ -24,9 +26,9 @@ namespace Breach
 
         private void Load()
         {
-            if (SaveLoad.SaveExists("Player"))
+            if (SaveLoad.SaveExists(SAVE_FILE_KEY))
             {
-                PlayerData = SaveLoad.Load<PlayerData>("Player");
+                PlayerData = SaveLoad.Load<PlayerData>(SAVE_FILE_KEY);
 
                 _health.SetCurrentHealth(PlayerData.Health);
                 _transform.position = PlayerData.Position;
@@ -36,7 +38,7 @@ namespace Breach
 
         private void Save()
         {
-            SaveLoad.Save(PlayerData, "Player");
+            SaveLoad.Save(PlayerData, SAVE_FILE_KEY);
         }
 
         private void Update()
