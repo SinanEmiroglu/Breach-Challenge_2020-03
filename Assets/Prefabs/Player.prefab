@@ -257,7 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 6
   jumpForce: 75
-  _rotationSpeed: 7
+  _rotationSpeed: 10
   foot: {fileID: 5600724371567300382}
   radius: 0.1
   layerMask:

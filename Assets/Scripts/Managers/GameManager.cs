@@ -46,7 +46,7 @@ namespace Breach
         public void BouncePlayer()
         {
             OnScoreUpdated?.Invoke(++_currentLevelData.CurrentScore, _currentLevelData.ScoreToWin);
-            _playerController.Jump();
+            _playerController.Bounce();
 
             if (_currentLevelData.CurrentScore >= _currentLevelData.ScoreToWin)
             {

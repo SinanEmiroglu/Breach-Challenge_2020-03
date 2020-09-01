@@ -6,7 +6,7 @@ namespace Breach
     {
         [SerializeField] private float moveSpeed = 6f;
         [SerializeField] private float jumpForce = 4f;
-        [SerializeField] private float _rotationSpeed = 5f;
+        [SerializeField] private float _rotationSpeed = 50f;
 
         [Header("Foot Sphere Cast Fields")]
         [SerializeField] Transform foot;
@@ -21,9 +21,9 @@ namespace Breach
         private Vector3 _directionBeforeJump;
         private RaycastHit[] _raycastHits;
 
-        public void Jump()
+        public void Bounce()
         {
-            _rigidbody.AddForce(0.5f * jumpForce * (2 * Vector3.up + _directionBeforeJump), ForceMode.Impulse);
+            _rigidbody.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
         }
 
         private void Awake()
@@ -39,13 +39,11 @@ namespace Breach
             _horizontalAxis = Input.GetAxis("Horizontal");
             _horizontalMouseAxis = Input.GetAxis("Mouse X");
 
-            var direction = new Vector3(_horizontalAxis, 0, _verticalAxis);
+            Vector3 direction = new Vector3(_horizontalAxis, 0, _verticalAxis);
 
             if (IsGrounded() && direction.sqrMagnitude > Mathf.Epsilon)
             {
-                _directionBeforeJump = direction;
-                Vector3 motion = _rigidbody.position + _transform.TransformDirection(moveSpeed * Time.deltaTime * direction);
-                _rigidbody.MovePosition(motion);
+                MoveOnGround(direction);
             }
 
             if (IsGrounded() && Input.GetKey(KeyCode.Space))
@@ -54,20 +52,40 @@ namespace Breach
             }
             else
             {
-                _rigidbody.velocity += Vector3.up * Physics.gravity.y * 5f * Time.deltaTime;
+                Fall();
             }
-        }
 
-        private void LateUpdate()
-        {
             if (Input.GetMouseButton(1))
             {
-                _transform.Rotate(_transform.up * _horizontalMouseAxis * _rotationSpeed);
+                RotatePlayer();
             }
             else
             {
                 _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
             }
+        }
+
+        private void Fall()
+        {
+            _rigidbody.velocity += Vector3.up * Physics.gravity.y * 5f * Time.deltaTime;
+        }
+
+        private void Jump()
+        {
+            _rigidbody.AddForce(0.5f * jumpForce * (2 * Vector3.up + _directionBeforeJump), ForceMode.Impulse);
+        }
+
+        private void MoveOnGround(Vector3 direction)
+        {
+            _directionBeforeJump = _transform.TransformDirection(direction);
+            Vector3 motion = _rigidbody.position + _transform.TransformDirection(moveSpeed * Time.deltaTime * direction);
+            _rigidbody.MovePosition(motion);
+        }
+
+        private void RotatePlayer()
+        {
+            Quaternion mouseRotation = _rigidbody.rotation * Quaternion.Euler(Vector3.up * _horizontalMouseAxis * _rotationSpeed);
+            _rigidbody.MoveRotation(mouseRotation);
         }
 
         /// <summary>
