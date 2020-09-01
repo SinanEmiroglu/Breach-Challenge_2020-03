@@ -43,7 +43,7 @@ namespace Breach
 
         public void Load() => OnLoad?.Invoke();
 
-        internal void BouncePlayer()
+        public void BouncePlayer()
         {
             OnScoreUpdated?.Invoke(++_currentLevelData.CurrentScore, _currentLevelData.ScoreToWin);
             _playerController.Jump();
@@ -85,10 +85,13 @@ namespace Breach
             _levelIndex = 0;
         }
 
+        /// <summary>
+        /// Hardcoded levels
+        /// </summary>
         private void InitializeLevelData()
         {
-            _levels = new[] {new LevelData(scoreToWin:5,currentScore:0,dudeNumberToSpawn:10,remainingTimeOfLevel:120),
-                              new LevelData(scoreToWin:8,currentScore:2,dudeNumberToSpawn:20,remainingTimeOfLevel:120)};
+            _levels = new[] {new LevelData(levelName:"First Level", scoreToWin:5, currentScore:0, remainingTimeOfLevel:120),
+                             new LevelData(levelName:"Second Level", scoreToWin:8, currentScore:2, remainingTimeOfLevel:120)};
         }
 
         private void Update()

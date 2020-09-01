@@ -18,11 +18,12 @@ namespace Breach
         private float _horizontalMouseAxis;
         private Transform _transform;
         private Rigidbody _rigidbody;
+        private Vector3 _directionBeforeJump;
         private RaycastHit[] _raycastHits;
 
         public void Jump()
         {
-            _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
+            _rigidbody.AddForce(0.5f * jumpForce * (2 * Vector3.up + _directionBeforeJump), ForceMode.Impulse);
         }
 
         private void Awake()
@@ -40,23 +41,38 @@ namespace Breach
 
             var direction = new Vector3(_horizontalAxis, 0, _verticalAxis);
 
-            _transform.position += _transform.TransformDirection(moveSpeed * Time.deltaTime * direction);
+            if (IsGrounded() && direction.sqrMagnitude > Mathf.Epsilon)
+            {
+                _directionBeforeJump = direction;
+                Vector3 motion = _rigidbody.position + _transform.TransformDirection(moveSpeed * Time.deltaTime * direction);
+                _rigidbody.MovePosition(motion);
+            }
 
-            if (Input.GetButtonDown("Jump") && IsGrounded())
+            if (IsGrounded() && Input.GetKey(KeyCode.Space))
             {
                 Jump();
             }
-            else if (!IsGrounded())
+            else
             {
-                _rigidbody.AddForce(jumpForce * Vector3.down, ForceMode.Acceleration);
+                _rigidbody.velocity += Vector3.up * Physics.gravity.y * 5f * Time.deltaTime;
             }
+        }
 
+        private void LateUpdate()
+        {
             if (Input.GetMouseButton(1))
             {
                 _transform.Rotate(_transform.up * _horizontalMouseAxis * _rotationSpeed);
             }
+            else
+            {
+                _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+            }
         }
 
+        /// <summary>
+        /// NonAlloc casts are more cheaper than dynamic casts.
+        /// </summary>
         private bool IsGrounded() => Physics.SphereCastNonAlloc(foot.position, radius, Vector2.down, _raycastHits, 0, layerMask) > 0;
 
 #if UNITY_EDITOR

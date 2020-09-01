@@ -18,7 +18,6 @@ namespace Breach
         {
             GameManager.OnSave += SaveHandler;
             GameManager.OnLoad += LoadHandler;
-
             SceneManager.sceneUnloaded += SceneUnloadedHandler;
         }
 
@@ -43,7 +42,6 @@ namespace Breach
             if (!SaveLoad.SaveExists(SAVE_FILE_KEY))
                 return;
 
-            _allAvailableDudesData = new List<DudeData>();
             _allAvailableDudesData = SaveLoad.Load<List<DudeData>>(SAVE_FILE_KEY);
 
             foreach (var data in _allAvailableDudesData)
@@ -51,6 +49,8 @@ namespace Breach
                 var spawned = dudePrefab.Get<Dude>(data.Position, data.Rotation);
                 spawned.SetDudeData(data);
             }
+
+            _allAvailableDudesData.Clear();
         }
 
         /// <summary>
@@ -58,6 +58,13 @@ namespace Breach
         /// </summary>
         private void SaveHandler()
         {
+            var spawnables = Spawnable.GetActiveSpawnables();
+
+            foreach (Dude dude in spawnables)
+            {
+                _allAvailableDudesData.Add(dude.DudeData);
+            }
+
             SaveLoad.Save(_allAvailableDudesData, SAVE_FILE_KEY);
         }
 

@@ -1,14 +1,32 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Breach
 {
     public class Spawnable : PooledMonoBehaviour
     {
-        [SerializeField] private float returnToPoolDelay = 3f; // Delay allow us to play a death animation if it's necessary
+        [Header("Spawnable Attributes")]
+        [SerializeField] private int totalNumberToSpawn;
 
-        private void Start()
+        private static List<Spawnable> _spawnables = new List<Spawnable>();
+
+        public int TotalNumberToSpawn => totalNumberToSpawn;
+
+        /// <summary>
+        /// Returning all active spawnable game objects in the hierarchy.
+        /// </summary>
+        public static IEnumerable<Spawnable> GetActiveSpawnables()
         {
-            GetComponent<Health>().OnDie += () => ReturnToPool(returnToPoolDelay);
+            foreach (var item in _spawnables)
+            {
+                yield return item;
+            }
+        }
+
+        protected virtual void OnEnable()
+        {
+            _spawnables.Add(this);
+            OnReturnToPool += (pooled) => _spawnables.Remove(this);
         }
     }
 }

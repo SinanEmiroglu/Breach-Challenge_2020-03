@@ -6,6 +6,7 @@ namespace Breach
 {
     public class Dude : Spawnable
     {
+        [Header("Dude Attributes")]
         [SerializeField] private int damage = 1;
         [SerializeField] private MeshRenderer meshRenderer;
 
@@ -20,6 +21,18 @@ namespace Breach
         public void SetDudeData(DudeData data)
         {
             DudeData = data;
+            meshRenderer.material.color = DudeData.Color;
+            _anImportantStateValue = DudeData.AnImportantStateValue;
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            DudeData.AnImportantStateValue = Random.Range(1, 10000);
+            DudeData.MoveSpeed = Random.Range(3, 6);
+            DudeData.Color = GetRandomColorValue();
+
             meshRenderer.material.color = DudeData.Color;
             _anImportantStateValue = DudeData.AnImportantStateValue;
         }
@@ -43,16 +56,6 @@ namespace Breach
             }
 
             ReturnToPool();
-        }
-
-        private void OnEnable()
-        {
-            DudeData.AnImportantStateValue = Random.Range(1, 10000);
-            DudeData.MoveSpeed = Random.Range(1, 4);
-            DudeData.Color = GetRandomColorValue();
-
-            meshRenderer.material.color = DudeData.Color;
-            _anImportantStateValue = DudeData.AnImportantStateValue;
         }
 
         private Color GetRandomColorValue() => new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);

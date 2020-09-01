@@ -16,8 +16,6 @@ namespace Breach
         private Transform playerTransform;
         private NavMeshPath path;
 
-        private void OnEnable() => GetComponent<Health>().OnDie += () => enabled = false;
-
         private void Start()
         {
             _transform = transform;

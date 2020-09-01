@@ -14,14 +14,13 @@ namespace Breach
         private int _totalNumberToSpawn;
         private int _totalNumberSpawned = 0;
 
-        private readonly float _respawnRate = 3;
+        private readonly float _respawnRate = 5;
         private readonly float initialSpawnDelay = 1;
         private readonly int _numberToSpawnEachTime = 1;
 
         private void OnEnable()
         {
             _spawnTimer = _respawnRate - initialSpawnDelay;
-            GameManager.OnLevelLoaded += (data) => _totalNumberToSpawn = data.DudeNumberToSpawn;
         }
 
         private void Update()
@@ -39,10 +38,12 @@ namespace Breach
             var availableSpawnPoints = spawnPoints.ToList();
             for (int i = 0; i < _numberToSpawnEachTime; i++)
             {
+                Spawnable prefab = ChooseRandomPrefab();
+                _totalNumberToSpawn = prefab.TotalNumberToSpawn;
+
                 if (_totalNumberSpawned >= _totalNumberToSpawn && _totalNumberToSpawn > 0)
                     break;
 
-                Spawnable prefab = ChooseRandomPrefab();
                 if (prefab != null)
                 {
                     Transform spawnPoint = ChooseRandomSpawnPoint(availableSpawnPoints);
