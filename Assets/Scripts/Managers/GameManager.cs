@@ -86,7 +86,7 @@ namespace Breach
 
         private void InitializeLevelData()
         {
-            _levels = new[] {new LevelData(scoreToWin:5,currentScore:0,dudeNumberToSpawn:10,remainingTimeOfLevel:10),
+            _levels = new[] {new LevelData(scoreToWin:5,currentScore:0,dudeNumberToSpawn:10,remainingTimeOfLevel:120),
                               new LevelData(scoreToWin:8,currentScore:2,dudeNumberToSpawn:20,remainingTimeOfLevel:120)};
         }
 
