@@ -74,6 +74,7 @@ namespace Breach
                 _collider.enabled = false;
                 DOTween.Sequence().Append(transform.DOScaleY(0.2f, 0.35f))
                     .Join(transform.DOScaleX(2, 0.35f))
+                    .Join(transform.DOScaleZ(2, 0.35f))
                     .OnComplete(() => ReturnToPool());
 
                 GameManager.Instance.BouncePlayer();
