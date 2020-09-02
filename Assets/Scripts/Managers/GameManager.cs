@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
 
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -72,6 +73,13 @@ namespace Breach
             _isGamePaused = !_isGamePaused;
         }
 
+        public void ReturnMenu()
+        {
+            _mainMenu.SetActiveMainMenu(true);
+            SceneManager.UnloadSceneAsync(1);
+            SceneManager.UnloadSceneAsync(2);
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -86,7 +94,7 @@ namespace Breach
         }
 
         /// <summary>
-        /// Hardcoded levels
+        /// Hard-coded levels
         /// </summary>
         private void InitializeLevelData()
         {
@@ -175,7 +183,12 @@ namespace Breach
 
             yield return new WaitUntil(() => operation.isDone);
 
+            _playerController = FindObjectOfType<PlayerMovementController>();
             _currentLevelData = GetLevelDataByIndex(++_levelIndex);
+            _remainingTime = _currentLevelData.RemainingTimeOfLevel;
+
+            OnLevelLoaded?.Invoke(_currentLevelData);
+            OnScoreUpdated?.Invoke(_currentLevelData.CurrentScore, _currentLevelData.ScoreToWin);
 
             if (_currentLevelData != null)
             {

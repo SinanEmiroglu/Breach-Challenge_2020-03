@@ -76,8 +76,8 @@ namespace Breach
 
             quitButton.onClick.AddListener(() =>
             {
-                _gameManager.Save();
-                Application.Quit();
+                //_gameManager.Save();
+                _gameManager.ReturnMenu();
             });
         }
 

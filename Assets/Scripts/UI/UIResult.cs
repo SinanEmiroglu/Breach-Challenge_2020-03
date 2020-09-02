@@ -29,7 +29,7 @@ namespace Breach
                 _expectedScore = expected;
             };
 
-            replayButton.onClick.AddListener(() => GameManager.Instance.ReplayLastLevel());
+            //replayButton.onClick.AddListener(() => GameManager.Instance.ReplayLastLevel());
 
             nextButton.onClick.AddListener(() => GameManager.Instance.BeginNextLevel());
 
