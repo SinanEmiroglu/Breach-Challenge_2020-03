@@ -1,6 +1,9 @@
 ﻿using System.Runtime.Serialization;
 using UnityEngine;
 
+/// <summary>
+/// Surrogate Color data type to make it serializable in BinaryFormatter
+/// </summary>
 [System.Serializable]
 public class ColorSerializationSurrogate : ISerializationSurrogate
 {

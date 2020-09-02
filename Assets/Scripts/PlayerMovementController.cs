@@ -21,6 +21,9 @@ namespace Breach
         private Vector3 _directionBeforeJump;
         private RaycastHit[] _raycastHits;
 
+        /// <summary>
+        /// Bounce player after they jump on dudes
+        /// </summary>
         public void Bounce()
         {
             _rigidbody.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
@@ -41,7 +44,7 @@ namespace Breach
 
             Vector3 direction = new Vector3(_horizontalAxis, 0, _verticalAxis);
 
-            if (IsGrounded() && direction.sqrMagnitude > Mathf.Epsilon)
+            if (IsGrounded())
             {
                 MoveOnGround(direction);
             }

@@ -15,6 +15,7 @@ namespace Breach
         public void SetCurrentHealth(int value)
         {
             _currentHealth = value;
+            OnHealthChanged?.Invoke(_currentHealth, maxHealth);
         }
 
         private void Awake()
@@ -27,6 +28,9 @@ namespace Breach
             OnHealthChanged?.Invoke(_currentHealth, maxHealth);
         }
 
+        /// <summary>
+        /// Holder takes damage depending on amount.
+        /// </summary>
         public void TakeHit(int amount)
         {
             if (_currentHealth <= 0)

@@ -41,6 +41,9 @@ namespace Breach
             return File.Exists(path);
         }
 
+        /// <summary>
+        /// Instead of returning an empty BinaryFormatter instance, Surrogates are introduced to get more serializable data.
+        /// </summary>
         private static BinaryFormatter GetBinaryFormatter()
         {
             BinaryFormatter formatter = new BinaryFormatter();

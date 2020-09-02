@@ -8,16 +8,14 @@ namespace Breach
         public string LevelName;
         public int ScoreToWin;
         public int CurrentScore;
-        //public int DudeNumberToSpawn;
-        public float RemainingTimeOfLevel;
+        public float TimeLeftInSec;
 
-        public LevelData(string levelName, int scoreToWin, int currentScore/*, int dudeNumberToSpawn*/, float remainingTimeOfLevel)
+        public LevelData(string levelName, int scoreToWin, int currentScore, float timeLeftInSec)
         {
             LevelName = levelName;
             ScoreToWin = scoreToWin;
             CurrentScore = currentScore;
-            //DudeNumberToSpawn = dudeNumberToSpawn;
-            RemainingTimeOfLevel = remainingTimeOfLevel;
+            TimeLeftInSec = timeLeftInSec;
         }
     }
 }

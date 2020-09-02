@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Breach AS. All rights reserved.
 
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,18 +31,34 @@ namespace Breach
         private PlayerMovementController _playerController;
         private LevelData[] _levels;
 
-        public void BeginLevel(GameState state) => StartCoroutine(BeginGame(state));
-        public void BeginNextLevel() => StartCoroutine(BeginNextGame());
+        /// <summary>
+        /// Player starts a new level or continue saved one.
+        /// </summary>
+        public void BeginLevel(GameState state) => StartCoroutine(NewGameCor(state));
 
+        /// <summary>
+        /// Player starts a next level after they complete current one successfully.
+        /// </summary>
+        public void BeginNextLevel() => StartCoroutine(NextGameCor());
+
+        /// <summary>
+        /// Global save invoker.
+        /// </summary>
         public void Save()
         {
-            _currentLevelData.RemainingTimeOfLevel = _remainingTime;
+            _currentLevelData.TimeLeftInSec = _remainingTime;
             SaveLoad.Save(_currentLevelData, SAVE_FILE_KEY);
             OnSave?.Invoke();
         }
 
+        /// <summary>
+        /// Global load invoker.
+        /// </summary>
         public void Load() => OnLoad?.Invoke();
 
+        /// <summary>
+        /// Called by dudes after they are hit with top. Also, checking game is over or not.
+        /// </summary>
         public void BouncePlayer()
         {
             OnScoreUpdated?.Invoke(++_currentLevelData.CurrentScore, _currentLevelData.ScoreToWin);
@@ -55,11 +70,9 @@ namespace Breach
             }
         }
 
-        public void ReplayLastLevel()
-        {
-
-        }
-
+        /// <summary>
+        /// Called by Menu button in game to freeze the play time.
+        /// </summary>
         public void PausePlayGame()
         {
             if (_isGamePaused)
@@ -73,11 +86,13 @@ namespace Breach
             _isGamePaused = !_isGamePaused;
         }
 
+        /// <summary>
+        /// Called by UIGameplay -> Return Menu button.
+        /// </summary>
         public void ReturnMenu()
         {
             _mainMenu.SetActiveMainMenu(true);
             SceneManager.UnloadSceneAsync(1);
-            SceneManager.UnloadSceneAsync(2);
         }
 
         protected override void Awake()
@@ -94,12 +109,12 @@ namespace Breach
         }
 
         /// <summary>
-        /// Hard-coded levels
+        /// Hard-coded level data.
         /// </summary>
         private void InitializeLevelData()
         {
-            _levels = new[] {new LevelData(levelName:"First Level", scoreToWin:5, currentScore:0, remainingTimeOfLevel:120),
-                             new LevelData(levelName:"Second Level", scoreToWin:8, currentScore:2, remainingTimeOfLevel:120)};
+            _levels = new[] {new LevelData(levelName:"First Level", scoreToWin:5, currentScore:0, timeLeftInSec:80),
+                             new LevelData(levelName:"Second Level", scoreToWin:8, currentScore:0, timeLeftInSec:120)};
         }
 
         private void Update()
@@ -126,6 +141,9 @@ namespace Breach
             }
         }
 
+        /// <summary>
+        /// Game over handler to invoke OnGameOver event.
+        /// </summary>
         private void GameOver(bool isWon)
         {
             _isGameStarted = false;
@@ -150,7 +168,7 @@ namespace Breach
             return SaveLoad.Load<LevelData>(SAVE_FILE_KEY);
         }
 
-        private IEnumerator BeginGame(GameState state)
+        private IEnumerator NewGameCor(GameState state)
         {
             AsyncOperation operation = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
 
@@ -171,13 +189,13 @@ namespace Breach
                 _currentLevelData = GetSavedLevelData();
             }
 
-            _remainingTime = _currentLevelData.RemainingTimeOfLevel;
+            _remainingTime = _currentLevelData.TimeLeftInSec;
 
             OnLevelLoaded?.Invoke(_currentLevelData);
             OnScoreUpdated?.Invoke(_currentLevelData.CurrentScore, _currentLevelData.ScoreToWin);
         }
 
-        private IEnumerator BeginNextGame()
+        private IEnumerator NextGameCor()
         {
             AsyncOperation operation = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
 
@@ -185,7 +203,7 @@ namespace Breach
 
             _playerController = FindObjectOfType<PlayerMovementController>();
             _currentLevelData = GetLevelDataByIndex(++_levelIndex);
-            _remainingTime = _currentLevelData.RemainingTimeOfLevel;
+            _remainingTime = _currentLevelData.TimeLeftInSec;
 
             OnLevelLoaded?.Invoke(_currentLevelData);
             OnScoreUpdated?.Invoke(_currentLevelData.CurrentScore, _currentLevelData.ScoreToWin);
@@ -202,27 +220,5 @@ namespace Breach
                 _mainMenu.SetActiveMainMenu(true);
             }
         }
-
-        //private void OnGUI()
-        //{
-        //    if (GUI.Button(new Rect(10, 10, 150, 50), "Save Level"))
-        //    {
-        //        Save();
-        //        //print("Save the current level.");
-        //    }
-
-        //    if (GUI.Button(new Rect(170, 10, 150, 50), "Load Level"))
-        //        Load();
-        //    //print("Replaces current level with one loaded from a previous save");
-
-        //    if (GUI.Button(new Rect(10, 70, 150, 50), "Save GameState"))
-        //        print("Save transforms and velocities of all dynamic game object and states");
-
-        //    if (GUI.Button(new Rect(170, 70, 150, 50), "Load GameState"))
-        //        print("Loads previously saved dynamic game objects, restoring their transforms and velocities");
-
-        //    GUI.TextField(new Rect(10, 130, 150, 20), "Remaining Time: " + _currentLevel.RemainingTimeOfLevel.ToString());
-
-        //}
     }
 }

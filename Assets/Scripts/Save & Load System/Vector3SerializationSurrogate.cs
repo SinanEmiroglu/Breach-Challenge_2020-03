@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Breach
 {
+    /// <summary>
+    /// Surrogate Vector3 data type to make it serializable in BinaryFormatter
+    /// </summary>
     [System.Serializable]
     public class Vector3SerializationSurrgote : ISerializationSurrogate
     {

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Breach
 {
+    /// <summary>
+    /// Surrogate Quaternion data type to make it serializable in BinaryFormatter
+    /// </summary>
     [System.Serializable]
     public class QuaternionSerializationSurrogate : ISerializationSurrogate
     {

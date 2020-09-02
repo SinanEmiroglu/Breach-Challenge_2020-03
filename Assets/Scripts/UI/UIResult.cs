@@ -29,8 +29,6 @@ namespace Breach
                 _expectedScore = expected;
             };
 
-            //replayButton.onClick.AddListener(() => GameManager.Instance.ReplayLastLevel());
-
             nextButton.onClick.AddListener(() => GameManager.Instance.BeginNextLevel());
 
             menuButton.onClick.AddListener(() =>
@@ -45,7 +43,7 @@ namespace Breach
             if (isWon)
             {
                 nextButton.interactable = true;
-                resultText.text = $"Congratulation! Score: <b>{_actualScore}/{_expectedScore}</b>";
+                resultText.text = "Congratulation!";
             }
             else
             {
