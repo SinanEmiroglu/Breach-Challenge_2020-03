@@ -55,6 +55,8 @@ namespace Breach
         private void OnDisable()
         {
             _health.OnHealthChanged -= HealthChangedHandler;
+            GameManager.OnSave -= Save;
+            GameManager.OnLoad -= Load;
         }
     }
 }

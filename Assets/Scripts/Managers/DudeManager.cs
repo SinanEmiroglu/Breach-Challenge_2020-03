@@ -72,6 +72,7 @@ namespace Breach
         {
             GameManager.OnSave -= SaveHandler;
             GameManager.OnLoad -= LoadHandler;
+            SceneManager.sceneUnloaded -= SceneUnloadedHandler;
         }
     }
 }

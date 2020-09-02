@@ -91,6 +91,7 @@ namespace Breach
         /// </summary>
         public void ReturnMenu()
         {
+            PausePlayGame();
             _mainMenu.SetActiveMainMenu(true);
             SceneManager.UnloadSceneAsync(1);
         }
@@ -113,8 +114,8 @@ namespace Breach
         /// </summary>
         private void InitializeLevelData()
         {
-            _levels = new[] {new LevelData(levelName:"First Level", scoreToWin:5, currentScore:0, timeLeftInSec:80),
-                             new LevelData(levelName:"Second Level", scoreToWin:8, currentScore:0, timeLeftInSec:120)};
+            _levels = new[] {new LevelData(levelName: "First Challenge", scoreToWin: 4, currentScore: 0, timeLeftInSec: 80),
+                             new LevelData(levelName: "Second Challenge", scoreToWin: 8, currentScore: 0, timeLeftInSec: 120)};
         }
 
         private void Update()
@@ -168,6 +169,9 @@ namespace Breach
             return SaveLoad.Load<LevelData>(SAVE_FILE_KEY);
         }
 
+        /// <summary>
+        /// Callbacks are "New Game" or "Continue" in the main menu.
+        /// </summary>
         private IEnumerator NewGameCor(GameState state)
         {
             AsyncOperation operation = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
@@ -185,16 +189,20 @@ namespace Breach
             }
             else if (state == GameState.Saved)
             {
-                Load();
                 _currentLevelData = GetSavedLevelData();
+                Load();
             }
 
             _remainingTime = _currentLevelData.TimeLeftInSec;
 
             OnLevelLoaded?.Invoke(_currentLevelData);
             OnScoreUpdated?.Invoke(_currentLevelData.CurrentScore, _currentLevelData.ScoreToWin);
+            StopCoroutine("NewGameCor");
         }
 
+        /// <summary>
+        /// Callback is "Next Level" in the result screen.
+        /// </summary>
         private IEnumerator NextGameCor()
         {
             AsyncOperation operation = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
@@ -219,6 +227,7 @@ namespace Breach
                 SceneManager.UnloadSceneAsync(2);
                 _mainMenu.SetActiveMainMenu(true);
             }
+            StopCoroutine("NextGameCor");
         }
     }
 }

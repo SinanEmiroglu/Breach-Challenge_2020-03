@@ -42,6 +42,18 @@ namespace Breach
         }
 
         /// <summary>
+        /// To clean all save logs. Called in UIMainMenu.
+        /// </summary>
+        public static void DeleteAllSaveFiles()
+        {
+            if (Directory.Exists(_savePath))
+            {
+                DirectoryInfo directory = new DirectoryInfo(_savePath);
+                directory.Delete(true);
+            }
+        }
+
+        /// <summary>
         /// Instead of returning an empty BinaryFormatter instance, Surrogates are introduced to get more serializable data.
         /// </summary>
         private static BinaryFormatter GetBinaryFormatter()
