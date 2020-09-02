@@ -16,8 +16,8 @@ namespace Breach
 
         private void OnEnable()
         {
-            GameManager.OnSave += SaveHandler;
-            GameManager.OnLoad += LoadHandler;
+            GameManager.OnSave += Save;
+            GameManager.OnLoad += Load;
             SceneManager.sceneUnloaded += SceneUnloadedHandler;
         }
 
@@ -37,7 +37,7 @@ namespace Breach
         /// <summary>
         /// When Level is loaded, instantiate all dudes and set their saved values.
         /// </summary>
-        private void LoadHandler()
+        private void Load()
         {
             if (!SaveLoad.SaveExists(SAVE_FILE_KEY))
                 return;
@@ -56,7 +56,7 @@ namespace Breach
         /// <summary>
         /// Save all active dudes in the scene. {Positions, Rotations, Colors, Speeds, AnImportantStateValues}
         /// </summary>
-        private void SaveHandler()
+        private void Save()
         {
             var spawnables = Spawnable.GetActiveSpawnables();
 
@@ -70,8 +70,8 @@ namespace Breach
 
         private void OnDisable()
         {
-            GameManager.OnSave -= SaveHandler;
-            GameManager.OnLoad -= LoadHandler;
+            GameManager.OnSave -= Save;
+            GameManager.OnLoad -= Load;
             SceneManager.sceneUnloaded -= SceneUnloadedHandler;
         }
     }
