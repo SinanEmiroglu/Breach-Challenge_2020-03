@@ -50,6 +50,11 @@ namespace Breach
         private void HealthChangedHandler(int current, int max)
         {
             PlayerData.Health = current;
+
+            if (current <= 0)
+            {
+                GameManager.Instance.GameOver(false, $"You died. Dudes jumped on you");
+            }
         }
 
         private void OnDisable()

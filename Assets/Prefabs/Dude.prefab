@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialPoolSize: 20
-  totalNumberToSpawn: 10
+  totalNumberToSpawn: 20
   damage: 1
   meshRenderer: {fileID: 1772949646666932955}
   DudeData:

@@ -11,8 +11,6 @@ namespace Breach
         [SerializeField] private Button nextButton;
         [SerializeField] private Button menuButton;
 
-        private int _actualScore;
-        private int _expectedScore;
         private UIMainMenu _mainMenu;
 
         private void Awake()
@@ -23,11 +21,6 @@ namespace Breach
         private void OnEnable()
         {
             GameManager.OnGameOver += GameOverHandler;
-            GameManager.OnScoreUpdated += (actual, expected) =>
-            {
-                _actualScore = actual;
-                _expectedScore = expected;
-            };
 
             nextButton.onClick.AddListener(() => GameManager.Instance.BeginNextLevel());
 
@@ -38,18 +31,23 @@ namespace Breach
             });
         }
 
-        private void GameOverHandler(bool isWon)
+        private void GameOverHandler(bool isWon, string message)
         {
+            resultText.text = message;
+
             if (isWon)
             {
                 nextButton.interactable = true;
-                resultText.text = "Congratulation!";
             }
             else
             {
                 nextButton.interactable = false;
-                resultText.text = $"Time's Up! Score: <b>{_actualScore}/{_expectedScore}</b>";
             }
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnGameOver -= GameOverHandler;
         }
     }
 }

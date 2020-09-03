@@ -14,7 +14,7 @@ namespace Breach
 
         public static event System.Action OnSave = delegate { };
         public static event System.Action OnLoad = delegate { };
-        public static event System.Action<bool> OnGameOver = delegate { };
+        public static event System.Action<bool, string> OnGameOver = delegate { };
         public static event System.Action<int, int> OnScoreUpdated = delegate { };
         public static event System.Action<float> OnRemainingTimeUpdated = delegate { };
         public static event System.Action<LevelData> OnLevelLoaded = delegate { };
@@ -66,7 +66,7 @@ namespace Breach
 
             if (_currentLevelData.CurrentScore >= _currentLevelData.ScoreToWin)
             {
-                GameOver(true);
+                GameOver(true, "Congratulation! You smashed all dudes.");
             }
         }
 
@@ -94,6 +94,20 @@ namespace Breach
             PausePlayGame();
             _mainMenu.SetActiveMainMenu(true);
             SceneManager.UnloadSceneAsync(1);
+        }
+
+        /// <summary>
+        /// Game over handler to invoke OnGameOver event.
+        /// </summary>
+        public void GameOver(bool isWon, string message)
+        {
+            _isGameStarted = false;
+            _isTimeOver = false;
+            SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive).completed += (opr) =>
+            {
+                OnGameOver?.Invoke(isWon, message);
+                SceneManager.UnloadSceneAsync(1);
+            };
         }
 
         protected override void Awake()
@@ -133,27 +147,13 @@ namespace Breach
             {
                 _isTimeOver = true;
 
-                GameOver(false);
+                GameOver(false, $"Time's Up! Score: <b>{_currentLevelData.CurrentScore}/{_currentLevelData.ScoreToWin}</b>");
                 OnRemainingTimeUpdated?.Invoke(0);
             }
             else
             {
                 OnRemainingTimeUpdated?.Invoke(_remainingTime);
             }
-        }
-
-        /// <summary>
-        /// Game over handler to invoke OnGameOver event.
-        /// </summary>
-        private void GameOver(bool isWon)
-        {
-            _isGameStarted = false;
-            _isTimeOver = false;
-            SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive).completed += (opr) =>
-            {
-                OnGameOver?.Invoke(isWon);
-                SceneManager.UnloadSceneAsync(1);
-            };
         }
 
         private LevelData GetLevelDataByIndex(int index)
